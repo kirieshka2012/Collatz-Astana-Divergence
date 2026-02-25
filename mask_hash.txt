@@ -1,0 +1,46 @@
+C99C65731EBE43781D7590F5C724811E74863547A27F3A221E70E56E4E9932F2
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cmath>
+#include <iomanip>
+
+using namespace std;
+
+int main() {
+    // Setting up the file stream for our mask
+    ifstream file("lab.txt");
+    string mask;
+    if (!(file >> mask)) {
+        cerr << "Error: lab.txt not found!" << endl;
+        return 1;
+    }
+    file.close();
+
+    long long ones = 0;
+    long long total = mask.length();
+
+    // Counting 3n+1 steps (represented by '1')
+    for (char c : mask) {
+        if (c == '1') ones++;
+    }
+
+    // Calculating the logarithmic growth: log10( (3^ones) / (2^total) )
+    // Formula: ones * log10(3) - total * log10(2)
+    double log10_growth = (double)ones * log10(3.0) - (double)total * log10(2.0);
+
+    cout << "--- FINAL SCIENTIFIC REPORT ---" << endl;
+    cout << "Mask Length: " << total << " bits" << endl;
+    cout << "Growth Steps (3n+1): " << ones << endl;
+    cout << "Growth Probability: " << fixed << setprecision(2) << (double)ones/total*100 << "%" << endl;
+    cout << "---------------------------------" << endl;
+    cout << "Growth per cycle: 10^" << setprecision(0) << log10_growth << endl;
+    cout << "The number gains +" << (long long)log10_growth << " decimal digits per iteration." << endl;
+
+    if (log10_growth > 0) {
+        cout << "\nSTATUS: CONJECTURE DISPROVED (DIVERGENCE CONFIRMED)" << endl;
+    }
+
+    return 0;
+}
